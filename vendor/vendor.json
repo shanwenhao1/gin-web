@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "NnbYBwxOAqx4BSOSfPMrMzs7BH4=",
+			"path": "github.com/gin-gonic/gin",
+			"revision": "678e09c736505225e28d8c585087b84faaf4bb80",
+			"revisionTime": "2018-12-20T09:54:08Z"
+		},
+		{
+			"checksumSHA1": "irppLV/FH7LK1vhT8TzvA1q0rQQ=",
+			"path": "github.com/go-ini/ini",
+			"revision": "c498c36b6fd97d1f7eed886502ed3e9afa989ad3",
+			"revisionTime": "2018-12-22T14:55:11Z"
+		},
+		{
+			"checksumSHA1": "h2TXykkzboat0a06SIblU9MksBA=",
+			"path": "github.com/go-redis/redis",
+			"revision": "b3d9bf10f6666b2ee5100a6f3f84f4caf3b4e37d",
+			"revisionTime": "2018-10-25T06:51:40Z"
+		},
+		{
+			"checksumSHA1": "P5i9sKN2r4cR1CgMhv769YvXdjc=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "5ad6f621e6f59672f5b5061df85b243436fde048",
+			"revisionTime": "2018-12-13T13:04:51Z"
+		}
+	],
+	"rootPath": "gin-web"
+}

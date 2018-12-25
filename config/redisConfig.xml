@@ -1,0 +1,14 @@
+<redisconfig>
+	<!--使用何种网络协议链接redis-->
+	<redis_Network>tcp</redis_Network>
+	<!--redis链接地址-->
+	<redis_addr>192.168.1.89:6379</redis_addr>
+	<!--redis验证密码-->
+	<redis_passwd>123456</redis_passwd>
+	<!--使用数据库-->
+	<redis_dbnum>0</redis_dbnum>
+	<!--连接池大小-->
+	<redis_PoolSize>30</redis_PoolSize>
+	<!--空闲连接失效时间-->
+	<redis_IdleTimeout>120</redis_IdleTimeout>
+</redisconfig>
