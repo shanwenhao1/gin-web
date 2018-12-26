@@ -23,6 +23,8 @@ Docker的三个基本概念:
 
 ## 安装与使用
 
+### 安装
+
 - 安装内核可选模块
     ```bash
     sudo apt-get update
@@ -58,7 +60,53 @@ Docker的三个基本概念:
     # ubuntu 14.04则使用以下命令启动  
     sudo service docker start
     ```
+    - 查看docker启动情况
+    ```bash
+    sudo docker version
+    ```
 - 创建用户组: 出于安全考虑, 一般使用`docker`组的用户通过Unix socket与Docker引擎通讯, 而不是使用root用户.
     ```bash
     sudo groupadd docker
+    sudo usermod -aG docker swh
     ```
+- [使用镜像加速器](https://docs.docker.com/registry/recipes/mirror/#use-case-the-china-registry-mirror), 
+解决国内下载慢问题
+
+
+### 使用镜像
+
+- 获取镜像, 命令 docker pull [选项] [Docker Registry地址]<仓库名>:<标签>
+    ```bash
+    # 从Docker Hub中library/ubuntu仓库中标签为16.04的镜像
+    sudo docker pull ubuntu:16.04
+    ```
+    - 删除镜像命令(有需要的话)
+        ```bash
+        docker rmi ubuntu:14.04
+        # 删除虚悬镜像
+        docker rmi $(docker images -q -f dangling=true)
+        ```
+- docker images列出已下载的镜像
+- docker commit会将当前修改后的容器存储层在原有镜像的基础上保存为新的镜像, 慎用!!!
+    ```bash
+    docker commit [选项] <容器ID或容器名> [<仓库名>[:<标签>]]
+    ```
+    
+#### Dockerfile
+
+由于docker commit的定制方式都是黑箱操作, 其他人无法得知制作人修改了哪些, 因此使用Dockerfile的方式
+定制不仅使修改变为可见, 也解决了docker commit滥用造成的镜像臃肿等弊端.
+
+[Dockerfile示例](../Dockerfile)
+
+使用Dockerfile(创建标签名为test的镜像)
+```bash
+sudo docker build -t ubuntu:test .
+# 前期测试Dockerfile的话可以加上-rm参数
+```
+- 构建失败的话, 要先删除容器在删除失败的镜像
+```bash
+docker ps -a
+# for example: docker rm 9895c915a523
+docker rm [Container_Id]
+```
