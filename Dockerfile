@@ -3,19 +3,39 @@ FROM ubuntu:16.04
 # 作者
 MAINTAINER Razil "swh-email@qq.com"
 # 设置工作目录, 因为是编译后的文件, 所以没放在GOPATH下面
-WORKDIR $home/test
+WORKDIR $HOME/oss-server
 # 将工程目加入到docker容器中
-COPY . $home/test
+COPY . $HOME/oss-server
 # 更换软件源, sources.list必须在dockerfile同级目录下
-ADD sources.list /etc/apt/
+# ADD sources.list /etc/apt/
+# 添加阿里云依赖
+RUN echo -e "#添加阿里源\n
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse\n
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse\n
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse\n
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse\n
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse\n
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse\n
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse\n
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse\n
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse\n
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse">>/etc/apt/sources.list
 # ENV定义环境变量
 # 安装依赖
-RUN apt-get install apt-transport-https \
-    && apt-get update \
-    && apt-get install apt-transport-https \
+RUN apt-get update \
     && apt-get install libcurl4-openssl-dev libapr1-dev libaprutil1-dev libmxml-dev \
-    && wget http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/32131/cn_zh/1501595738954/aliyun-oss-c-sdk-3.5.0.tar.gz \
-    && wget http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/32131/cn_zh/1501595738954/aliyun-oss-c-sdk-3.5.0.tar.gz
-# 运行程序, test-app为编译后的go代码
-CMD  ["./test-app"]
+    && echo -e "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/oss-server/kw_media/lib\n
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0">>$HOME/.bashrc && source $HOME/.bashrc \
+    && apt-get install wget git tar cmake gcc g++ vim net-tools \
+    && wget http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/32131/cn_zh/1501595738954/aliyun-oss-c-sdk-3.5.0.tar.gz -P $HOME/ \
+    && git clone -b fix-sample-bug https://github.com/aliyun/aliyun-media-c-sdk.git $HOME/oss-media-c \
+    && find $HOME/oss-media-c/sample/*.c -exec sed -i "s/sleep(/\/\/sleep(/g" {} \; && find $HOME/oss-media-c/sample/*.h -exec sed -i "s/sleep(/\/\/sleep(/g" {} \; \
+    && find $HOME/oss-media-c/test/*.c -exec sed -i "s/sleep(/\/\/sleep(/g" {} \; && find $HOME/oss-media-c/test/*.h -exec sed -i "s/sleep(/\/\/sleep(/g" {} \; \
+    && tar -zxvf $HOME/aliyun-oss-c-sdk-3.5.0.tar.gz -C $HOME/ \
+    && cd $HOME/aliyun-oss-c-sdk-3.5.0 && cmake . && make && make install \
+    && cd $HOME/oss-media-c/src && sed -i "s/int OSS_MEDIA_AAC_SAMPLE_RATE = 1024;/int OSS_MEDIA_AAC_SAMPLE_RATE = 512;/g" $HOME/oss-media-c/src/oss_media_define.c \
+    && cd $HOME/oss-media-c/src && cmake . && make && make install \
+    && cd $HOME/oss-server/ && chmod +777 oss-server
+# 运行程序, oss-server为编译后的go代码
+CMD  ["./oss-server"]
 
