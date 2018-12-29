@@ -2,6 +2,15 @@
 
 [Docker book](docker.pdf)
 
+@[TOC]
+- [基本概念](#基本概念)
+- [安装与使用](#安装与使用)
+    - [安装](#安装)
+    - [使用镜像](#使用镜像)
+        - [Dockerfile](#Dockerfile)
+    - [容器操作](#容器操作)
+- [注意事项](#注意事项)
+
 ## 基本概念
 
 属于操作系统层面的虚拟化技术. 相对于传统虚拟机技术并不虚拟出一套硬件, 容器的应用进程直接运行于宿主的内核, 因此更为轻便.
@@ -110,3 +119,36 @@ docker ps -a
 # for example: docker rm 9895c915a523
 docker rm [Container_Id]
 ```
+
+### 容器操作
+
+主要有两种启动方式, 一种是基于镜像新建容器并启动, 另一种是将中止状态的容器重新启动.
+命令主要为`docker run`, `docker start`, `docker stop`, `docker restart`.
+
+docker run - [参数]:
+- t: 分配一个伪终端
+- i: 让容器以标准输入保持打开
+- d: 后台运行
+- v [目录]: 创建数据卷, docker rm -v 删除数据卷
+    ```bash
+    sudo docker run -d -P --name web -v /webapp training/webapp python app.py
+    ```
+- p: 指定端口映射
+    ```bash
+    sudo docker run -d -p 5000:5000 -p 3000:80 training/webapp python app.py
+    ```
+
+容器内可使用ps、top来查看进程使用
+
+docker 命令:
+- logs: 可查看容器的输出信息.
+- ps -a: 查看所有容器
+- attach [容器名]: 可进入后台容器进行操作或使用nsenter工具)
+- rm: 删除终止状态的容器, `docker rm $(docker ps -a -q)`清除所有终止状态的容器.
+- import: 导入容器快照文件为镜像
+- export: 导出容器为快照文件
+- inspect <id或其他>: 查看指定容器信息
+
+## 注意事项
+
+- Dockerfile使用 \ 作为转义换行符(一条跨行命令必须以 \ 结尾)
