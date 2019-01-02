@@ -43,3 +43,6 @@ RUN apt-get update \
 # 运行程序, oss-server为编译后的go代码
 CMD  ["/root/oss-server/oss-server"]
 
+
+# 注意为了保证镜像的精良化, 一些安装完之后的包可以删除掉安装包
+
