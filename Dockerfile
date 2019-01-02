@@ -21,14 +21,14 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted univers
 deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse\n\
 deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse">>/etc/apt/sources.list
 # ENV定义环境变量
-# 指定行添加
-    # sed -i "1i\!/bin/bash" $HOME/.bashrc
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/oss-server/kw_media/lib:/usr/local/lib C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0
 # 安装依赖
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libapr1-dev libaprutil1-dev libmxml-dev \
     && DEBIAN_FRONTEND=noninteractive echo n | dpkg-reconfigure dash \
-    && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/oss-server/kw_media/lib:/usr/local/lib\n\
-export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0">>$HOME/.bashrc && source $HOME/.bashrc \
+# 使用ENV设置环境变量
+#    && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/oss-server/kw_media/lib:/usr/local/lib\n\
+#export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0">>$HOME/.bashrc \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install wget git tar cmake gcc g++ vim net-tools lrzsz \
     && wget http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/32131/cn_zh/1501595738954/aliyun-oss-c-sdk-3.5.0.tar.gz -P $HOME/ \
     && git clone -b fix-sample-bug https://github.com/aliyun/aliyun-media-c-sdk.git $HOME/oss-media-c \
@@ -41,5 +41,5 @@ export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0">>$HOME/.bashrc && so
     && cd $HOME/oss-media-c && cmake . && make && make install \
     && cd /root/oss-server/ && chmod +777 oss-server
 # 运行程序, oss-server为编译后的go代码
-CMD  ["./oss-server"]
+CMD  ["/root/oss-server/oss-server"]
 
