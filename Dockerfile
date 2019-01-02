@@ -21,6 +21,8 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted univers
 deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse\n\
 deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse">>/etc/apt/sources.list
 # ENV定义环境变量
+# 指定行添加
+    # sed -i "1i\!/bin/bash" $HOME/.bashrc
 # 安装依赖
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libapr1-dev libaprutil1-dev libmxml-dev \
