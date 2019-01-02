@@ -27,7 +27,7 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install libcurl4-openssl-dev libapr1-dev libaprutil1-dev libmxml-dev \
     && DEBIAN_FRONTEND=noninteractive echo n | dpkg-reconfigure dash \
-    && echo -e "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/oss-server/kw_media/lib:/usr/local/lib\n\
+    && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/oss-server/kw_media/lib:/usr/local/lib\n\
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/include/apr-1.0">>$HOME/.bashrc && source $HOME/.bashrc \
     && DEBIAN_FRONTEND=noninteractive apt-get -y install wget git tar cmake gcc g++ vim net-tools lrzsz \
     && wget http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/attach/32131/cn_zh/1501595738954/aliyun-oss-c-sdk-3.5.0.tar.gz -P $HOME/ \
