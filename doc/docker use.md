@@ -137,6 +137,7 @@ docker run - [参数]:
     ```bash
     sudo docker run -d -p 5000:5000 -p 3000:80 training/webapp python app.py
     ```
+--net=host: 使用主机网络模式(针对于使用云服务主机然后访问云服务内网服务时, 其他模式会造成网段不一致无法访问的问题)
 
 容器内可使用ps、top来查看进程使用
 
