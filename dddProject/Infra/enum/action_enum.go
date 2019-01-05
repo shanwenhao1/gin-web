@@ -1,4 +1,4 @@
-package global
+package enum
 
 const (
 	OPERATE_SUCCESS int = 0 // 操作成功

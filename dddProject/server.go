@@ -1,10 +1,10 @@
-package server
+package dddProject
 
 import (
 	"encoding/xml"
 	"fmt"
-	"gin-web/project/models"
-	"gin-web/tool/log"
+	"gin-web/dddProject/Infra/log"
+	"gin-web/dddProject/domain/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
@@ -150,7 +150,7 @@ func (this Server) InitializedDataSource(path string) {
 		db.SingularTable(true)
 		db.DB().SetMaxOpenConns(configData.DbMaxConn)
 		db.DB().SetMaxIdleConns(configData.DbMaxIdle)
-		db.AutoMigrate(models.User{})
+		db.AutoMigrate(model.User{})
 		ds = *db
 		log.LogWithTag(log.InfoLog, log.InitSer, "数据源已初始化完成[最大打开连接数:%v,最大空闲连接数:%v]", configData.DbMaxConn, configData.DbMaxIdle)
 	}

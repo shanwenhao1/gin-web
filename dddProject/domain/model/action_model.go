@@ -1,6 +1,7 @@
-package global
-
-import "gin-web/project/models"
+/*
+	通用返回, 请求处理模块
+*/
+package model
 
 //异常消息模型
 type ParamModel struct {
@@ -19,10 +20,4 @@ type RequestJsonModel struct {
 	Sign          string      `json:"sign"`
 	TimeStamp     string      `json:"time_stamp"`
 	ClientVersion string      `json:"clientVersion"`
-}
-
-// 请求测试模型1
-type LoginJsonModel struct {
-	RequestJsonModel
-	Obj models.User `json:"obj"`
 }

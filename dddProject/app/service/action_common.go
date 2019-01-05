@@ -1,9 +1,10 @@
-package action
+package service
 
 import (
 	"encoding/json"
-	"gin-web/project/global"
-	"gin-web/tool/log"
+	"gin-web/dddProject/Infra/enum"
+	"gin-web/dddProject/Infra/log"
+	"gin-web/dddProject/domain/model"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -18,7 +19,7 @@ type ResponseJsonModel struct {
 }
 
 func GetRequestData(c *gin.Context, rjm interface{}) interface{} {
-	var reqData global.RequestJsonModel
+	var reqData model.RequestJsonModel
 	req := c.Request
 	addr := req.Header.Get("X-Real-IP") // 获取真实发出请求的客户端IP
 	if addr == "" {
@@ -57,25 +58,25 @@ func ResponseData(c *gin.Context, dataModel ResponseJsonModel) {
 //获取默认返回消息模型
 func GetDefaultRJM(code ...int) ResponseJsonModel {
 	if len(code) > 0 {
-		return ResponseJsonModel{ErrorCode: code[0], ErrorMsg: global.CodeMap[code[0]]}
+		return ResponseJsonModel{ErrorCode: code[0], ErrorMsg: enum.CodeMap[code[0]]}
 	} else {
-		return ResponseJsonModel{ErrorCode: global.OPERATE_FAILED, ErrorMsg: global.CodeMap[global.OPERATE_FAILED]}
+		return ResponseJsonModel{ErrorCode: enum.OPERATE_FAILED, ErrorMsg: enum.CodeMap[enum.OPERATE_FAILED]}
 	}
 }
 
 //获取成功返回消息模型
 func GetSuccessRJM(params ...interface{}) ResponseJsonModel {
 	if len(params) == 1 {
-		return ResponseJsonModel{ErrorCode: global.OPERATE_SUCCESS, ErrorMsg: global.CodeMap[global.OPERATE_SUCCESS], Obj: params[0]}
+		return ResponseJsonModel{ErrorCode: enum.OPERATE_SUCCESS, ErrorMsg: enum.CodeMap[enum.OPERATE_SUCCESS], Obj: params[0]}
 	}
 	if len(params) == 2 {
-		return ResponseJsonModel{ErrorCode: global.OPERATE_SUCCESS, ErrorMsg: global.CodeMap[global.OPERATE_SUCCESS], Obj: params[0], Token: params[1]}
+		return ResponseJsonModel{ErrorCode: enum.OPERATE_SUCCESS, ErrorMsg: enum.CodeMap[enum.OPERATE_SUCCESS], Obj: params[0], Token: params[1]}
 	}
-	return ResponseJsonModel{ErrorCode: global.OPERATE_SUCCESS, ErrorMsg: global.CodeMap[global.OPERATE_SUCCESS]}
+	return ResponseJsonModel{ErrorCode: enum.OPERATE_SUCCESS, ErrorMsg: enum.CodeMap[enum.OPERATE_SUCCESS]}
 }
 
 // 通用返回处理函数
-func CommonResponse(c *gin.Context, model global.ParamModel) {
+func CommonResponse(c *gin.Context, model model.ParamModel) {
 	if model.ErrorCode == 0 {
 		ResponseData(c, GetSuccessRJM(model.Obj))
 	} else {
