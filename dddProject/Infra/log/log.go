@@ -83,3 +83,10 @@ func LogWithTag(logType int, actionType string, arg2 interface{}, args ...interf
 		logger.Info(arg2, args)
 	}
 }
+
+//日志框架初始化
+func init(){
+	logger = make(log4go.Logger)
+	logger.LoadConfiguration("config/log4go.xml")
+	logger.Info("[" + InitSer + "]: " + "日志框架初始化完成")
+}
