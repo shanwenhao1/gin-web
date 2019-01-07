@@ -2,13 +2,15 @@ package redis
 
 import (
 	"encoding/json"
-	"time"
-	"io/ioutil"
 	"encoding/xml"
-	"github.com/go-redis/redis"
+	"fmt"
 	"gin-web/dddProject/Infra/log"
+	"github.com/go-redis/redis"
+	"io/ioutil"
+	"time"
 )
-var rds	*redis.Client
+
+var rds *redis.Client
 
 type RedisConfig struct {
 	Redis_addr        string        `xml:"redis_addr"`
@@ -18,7 +20,6 @@ type RedisConfig struct {
 	Redis_PoolSize    int           `xml:"redis_PoolSize"`
 	Redis_IdleTimeout time.Duration `xml:"redis_IdleTimeout"`
 }
-
 
 func GetCacheKey(tag string, key string) string {
 	return tag + "_" + key
@@ -80,7 +81,6 @@ func GetString(key string) (string, error) {
 	return rds.Get(key).Result()
 }
 
-
 func GetRDS() *redis.Client {
 	return rds
 }
@@ -88,6 +88,8 @@ func GetRDS() *redis.Client {
 // 初始化Redis数据源
 func init() {
 	dataS, rErr := ioutil.ReadFile("config/redisConfig.xml")
+	fmt.Println("+========================")
+	log.LogWithTag(log.InfoLog, log.InitSer, "tests       ")
 	if rErr != nil {
 		log.LogWithTag(log.ErrorLog, log.InitSer, "读取Redis服务配置文件异常:[%v]", rErr)
 		panic(rErr.Error())
