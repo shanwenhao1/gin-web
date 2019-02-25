@@ -16,3 +16,6 @@
 [TestServer][2019/01/07 09:58:54 CST][INFO]: [Init Server]: 日志框架初始化完成
 [TestServer][2019/01/07 09:58:54 CST][INFO]: [Init Server]: 运行环境初始化完成[处理器核心数:4]
 [TestServer][2019/01/07 09:58:54 CST][INFO]: [Init Server]: http网络框架初始化完成[192.168.1.94:8080][production]
+[TestServer][2019/02/23 17:09:36 CST][INFO]: [Init Server]: 日志框架初始化完成
+[TestServer][2019/02/23 17:09:36 CST][INFO]: [Init Server]: 运行环境初始化完成[处理器核心数:4]
+[TestServer][2019/02/23 17:09:36 CST][INFO]: [Init Server]: http网络框架初始化完成[192.168.1.94:8080][production]
