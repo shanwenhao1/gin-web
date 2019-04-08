@@ -20,13 +20,6 @@ const (
 	ReqParse = "Req Parsing"
 )
 
-//日志框架初始化
-func InitializedLog4go(path string) {
-	logger = make(log4go.Logger)
-	logger.LoadConfiguration(path)
-	logger.Info("[" + InitSer + "]: " + "日志框架初始化完成")
-}
-
 //记录基本日志
 func Info(arg0 interface{}, args ...interface{}) {
 	logger.Info(arg0, args...)
@@ -85,7 +78,7 @@ func LogWithTag(logType int, actionType string, arg2 interface{}, args ...interf
 }
 
 //日志框架初始化
-func init(){
+func init() {
 	logger = make(log4go.Logger)
 	logger.LoadConfiguration("config/log4go.xml")
 	logger.Info("[" + InitSer + "]: " + "日志框架初始化完成")
